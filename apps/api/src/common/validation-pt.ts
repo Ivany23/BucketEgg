@@ -9,7 +9,7 @@ const RULES: [RegExp, (m: RegExpMatchArray) => string][] = [
   [/^property (\S+) should not exist$/, (m) => `O campo «${m[1]}» não é permitido.`],
   [/^(\S+) should not exist$/, (m) => `O campo «${m[1]}» não é permitido.`],
   [/^(\S+) must be longer than or equal to (\d+) and shorter than or equal to (\d+) characters$/, (m) => `«${m[1]}» tem de ter entre ${m[2]} e ${m[3]} caracteres.`],
-  [/^(\S+) must be longer than or equal to (\d+) characters?$/, (m) => `«${m[1]}» tem de ter pelo menos ${m[2]} caracteres.`],
+  [/^(\S+) must be longer than or equal to (\d+) characters?$/, (m) => (m[2] === '1' ? `«${m[1]}» é obrigatório.` : `«${m[1]}» tem de ter pelo menos ${m[2]} caracteres.`)],
   [/^(\S+) must be shorter than or equal to (\d+) characters?$/, (m) => `«${m[1]}» pode ter no máximo ${m[2]} caracteres.`],
   [/^(\S+) must be a string$/, (m) => `«${m[1]}» tem de ser texto.`],
   [/^(\S+) must be a UUID$/, (m) => `«${m[1]}» tem de ser um identificador válido.`],

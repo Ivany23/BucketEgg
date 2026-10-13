@@ -1,0 +1,50 @@
+# Render Blueprint — API BucketEgg (NestJS) em Frankfurt, junto da base de dados Neon.
+# Render: New → Blueprint → escolher este repositório. Os valores com "sync: false" são pedidos
+# no ecrã na primeira criação (nunca os escreva aqui).
+services:
+  - type: web
+    name: bucketegg-api
+    runtime: docker
+    region: frankfurt # não pode ser mudada depois de criado
+    # free: adormece após 15 min sem pedidos (~1 min a acordar) e o disco apaga-se a cada reinício.
+    # Para produção e Excel de 300 000+ linhas: 1c-2g (2 GB RAM) ou superior.
+    plan: free
+    rootDir: apps/api # só alterações nesta pasta fazem novo deploy
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: ./apps/api
+    # Aplica as migrações pendentes (não faz nada se já estiverem aplicadas) e arranca a API.
+    dockerCommand: sh -c "./node_modules/.bin/prisma migrate deploy && exec node dist/main.js"
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Neon Frankfurt: endereço com "-pooler" (tráfego da API)
+      - key: DATABASE_URL
+        sync: false
+      # Neon Frankfurt: endereço SEM "-pooler" (migrações e importações em massa)
+      - key: DIRECT_DATABASE_URL
+        sync: false
+      # Gerada pelo Render (256 bits); mudá-la termina as sessões abertas.
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 1d
+      # Domínio(s) da interface no Vercel, separados por vírgula.
+      # Ex.: https://bucketegg.vercel.app,https://bucketegg-*.vercel.app
+      - key: CORS_ORIGINS
+        sync: false
+      # Opcional: chave da Google Routes API (sem ela usa o otimizador local)
+      - key: GOOGLE_MAPS_API_KEY
+        sync: false
+      - key: TRUST_PROXY
+        value: "1"
+      - key: STORAGE_DRIVER
+        value: local
+      - key: DB_POOL_SIZE
+        value: "10"
+      # 1 importação de cada vez cabe em 512 MB; com 2 GB pode subir para 2.
+      - key: IMPORT_CONCURRENCY
+        value: "1"
+      - key: UPLOAD_MAX_MB
+        value: "500"

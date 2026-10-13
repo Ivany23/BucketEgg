@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import compression from 'compression';
 import helmet from 'helmet';
 import './common/bigint-json.js';
+import { parseCorsOrigins } from './common/cors.js';
 import { PortugueseValidationPipe } from './common/validation-pt.js';
 
 /**
@@ -25,7 +26,7 @@ export function setupApp(app: INestApplication) {
   // Ficheiros XLSX já são comprimidos e são ignorados automaticamente.
   app.use(compression({ threshold: 1024 }));
   app.enableCors({
-    origin: config.get<string>('CORS_ORIGINS').split(',').map((o) => o.trim()),
+    origin: parseCorsOrigins(config.get<string>('CORS_ORIGINS')),
     credentials: true,
     // O frontend lê o nome do ficheiro exportado (XLSX/CSV) neste cabeçalho.
     exposedHeaders: ['Content-Disposition'],

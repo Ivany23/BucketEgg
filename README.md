@@ -20,11 +20,23 @@ Cada aplicação é independente e tem o seu próprio `pnpm-lock.yaml`.
    - Opcional: `NEXT_PUBLIC_MAP_TILES` / `NEXT_PUBLIC_MAP_ATTRIBUTION` (fornecedor de mapas com chave).
 4. **Deploy.**
 
-Depois do deploy, acrescente o domínio do Vercel a `CORS_ORIGINS` na API (ex.: `https://bucketegg.vercel.app`).
+Depois do deploy, acrescente o domínio do Vercel a `CORS_ORIGINS` na API (ex.: `https://bucketegg.vercel.app`). Um `*` aceita as pré-visualizações: `https://bucketegg-*.vercel.app`.
 
-## A API
+## Deploy da API no Render (Frankfurt)
 
-A API é um servidor NestJS de longa duração (workers de importação, ligações à base de dados), por isso corre num serviço de contentores (Dockerfile em `apps/api`) e não no Vercel. As variáveis estão descritas em [`apps/api/.env.example`](apps/api/.env.example).
+A API é um servidor NestJS de longa duração (workers de importação, ligações à base de dados), por isso corre num serviço de contentores e não no Vercel. A configuração está em [`render.yaml`](render.yaml).
+
+1. No Render: **New → Blueprint** e escolher este repositório.
+2. Preencher os valores pedidos:
+   - `DATABASE_URL` — Neon Frankfurt, endereço **com** `-pooler`;
+   - `DIRECT_DATABASE_URL` — Neon Frankfurt, endereço **sem** `-pooler`;
+   - `CORS_ORIGINS` — domínio(s) do Vercel, ex.: `https://bucketegg.vercel.app,https://bucketegg-*.vercel.app`;
+   - `GOOGLE_MAPS_API_KEY` — opcional (Routes API).
+   O `JWT_SECRET` é gerado pelo Render.
+3. **Apply.** Cada arranque aplica as migrações pendentes e o Render verifica `/health`.
+4. Copiar o endereço da API (ex.: `https://bucketegg-api.onrender.com`) para `NEXT_PUBLIC_API_URL` no Vercel e fazer **Redeploy** da interface.
+
+O plano `free` adormece após 15 min sem pedidos e apaga os ficheiros locais a cada reinício. Para produção (500+ utilizadores, Excel de 300 000+ linhas) use `1c-2g` ou superior. As restantes variáveis estão em [`apps/api/.env.example`](apps/api/.env.example).
 
 ## Desenvolvimento local
 

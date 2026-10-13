@@ -25,6 +25,7 @@ class Sample {
 describe('mensagens de validação em português', () => {
   it('traduz as mensagens por omissão do class-validator', () => {
     expect(translateValidationMessage('name must be longer than or equal to 2 characters')).toBe('«name» tem de ter pelo menos 2 caracteres.');
+    expect(translateValidationMessage('password must be longer than or equal to 1 characters')).toBe('«password» é obrigatório.');
     expect(translateValidationMessage('geofenceRadiusM must not be less than 10')).toBe('«geofenceRadiusM» não pode ser inferior a 10.');
     expect(translateValidationMessage('property role should not exist')).toBe('O campo «role» não é permitido.');
     expect(translateValidationMessage('status must be one of the following values: ACTIVE, REJECTED')).toBe(
