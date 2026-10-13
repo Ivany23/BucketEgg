@@ -1,0 +1,634 @@
+// Prisma schema - Plataforma Route-to-Market (inspirada no Beatroute)
+// Docs: https://pris.ly/d/prisma-schema
+//
+// Hierarquia de tenancy:
+//   Organization (tenant) -> Membership (User + Role) -> Project -> Outlets / Beats / Routes / Visits / Orders ...
+// Todas as queries de negócio são filtradas pelo organizationId presente no JWT.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// DATABASE_URL: ligação com pooling (tráfego da API). DIRECT_DATABASE_URL: ligação direta
+// (migrações e importações em massa com COPY, que a Neon recomenda fazer fora do pooler).
+// A extensão pg_trgm é criada na migração inicial (prisma/migrations).
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+// ─────────────────────────────── Enums ───────────────────────────────
+
+enum Role {
+  OWNER // Criador da organização, controlo total
+  ADMIN // Gere equipa, projetos e configuração
+  MANAGER // Supervisor: supervisiona promotores, planeia rotas, corrige dados recolhidos
+  ANALYST // Analista de dados: consulta, corrige e exporta dados; não gere equipa nem planeamento
+  FIELD_REP // Promotor / auditor no terreno: recolhe dados, não os pode alterar depois de submetidos
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  MISSED
+  CANCELLED
+}
+
+enum OutletStatus {
+  PENDING_APPROVAL
+  ACTIVE
+  INACTIVE
+  REJECTED
+}
+
+enum OrderStatus {
+  DRAFT
+  SUBMITTED
+  CONFIRMED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  CHEQUE
+  BANK_TRANSFER
+  MOBILE_MONEY
+  CARD
+}
+
+// ─────────────────────────────── Tenancy & Identity ───────────────────────────────
+
+model Organization {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  currency        String   @default("MZN")
+  timezone        String   @default("Africa/Maputo")
+  // Raio (metros) para validar check-ins por GPS (geofencing)
+  geofenceRadiusM Int      @default(150)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  memberships Membership[]
+  projects    Project[]
+  products    Product[]
+
+  @@map("organizations")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String // hash bcrypt
+  name      String?
+  phone     String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships    Membership[]
+  tasks          Task[]
+  routes         Route[]
+  beats          Beat[]
+  visits         Visit[]
+  attendances    Attendance[]
+  orders         Order[]
+  payments       Payment[]
+  createdOutlets Outlet[]     @relation("OutletCreatedBy")
+  importJobs     ImportJob[]
+
+  submittedRecords Record[]         @relation("RecordSubmittedBy")
+  updatedRecords   Record[]         @relation("RecordUpdatedBy")
+  deletedRecords   Record[]         @relation("RecordDeletedBy")
+  recordRevisions  RecordRevision[]
+
+  @@map("users")
+}
+
+// Um utilizador pode pertencer a várias organizações com papéis diferentes
+model Membership {
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  role           Role         @default(FIELD_REP)
+
+  // Hierarquia de equipa: um membro pode ter VÁRIOS supervisores e um supervisor várias pessoas
+  supervisors MembershipSupervisor[] @relation("MemberSupervisors")
+  supervising MembershipSupervisor[] @relation("SupervisorOf")
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+  @@index([userId])
+  @@map("memberships")
+}
+
+model MembershipSupervisor {
+  memberId     String
+  member       Membership @relation("MemberSupervisors", fields: [memberId], references: [id], onDelete: Cascade)
+  supervisorId String
+  supervisor   Membership @relation("SupervisorOf", fields: [supervisorId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+
+  @@id([memberId, supervisorId])
+  @@index([supervisorId])
+  @@map("membership_supervisors")
+}
+
+// ─────────────────────────────── Projects ───────────────────────────────
+
+model Project {
+  id             String       @id @default(uuid())
+  name           String
+  category       String?
+  description    String?
+  isArchived     Boolean      @default(false)
+  // Contador atómico para numerar encomendas sem colisões (ORD-000001, ...)
+  orderSeq       Int          @default(0)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  datasets    Dataset[]
+  outlets     Outlet[]
+  tasks       Task[]
+  routes      Route[]
+  beats       Beat[]
+  visits      Visit[]
+  orders      Order[]
+  attendances Attendance[]
+  importJobs  ImportJob[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@map("projects")
+}
+
+// ─────────────────────────────── Outlet master ───────────────────────────────
+
+// Loja / Cliente no terreno
+model Outlet {
+  id                 String       @id @default(uuid())
+  code               String? // Código externo (ERP)
+  name               String
+  address            String?
+  phone              String?
+  // Chaves normalizadas e indexadas para deteção rápida de duplicados
+  phoneKey           String? // últimos 9 dígitos do telefone
+  codeKey            String? // código em minúsculas sem espaços
+  contactName        String?
+  channel            String? // GT, MT, HoReCa, B2B...
+  outletClass        String? // A, B, C (segmentação)
+  visitFrequencyDays Int          @default(7) // Frequência alvo de visita
+  latitude           Float?
+  longitude          Float?
+  status             OutletStatus @default(ACTIVE)
+
+  potentialScore Float     @default(0.0) // Prioriza clientes de maior potencial
+  zone           String? // Agrupa clientes por zona
+  lastVisitedAt  DateTime? // Prioriza clientes atrasados
+  creditLimit    Float     @default(0)
+  balance        Float     @default(0) // Saldo em dívida (encomendas - pagamentos)
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdById String?
+  createdBy   User?   @relation("OutletCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  tasks     Task[]
+  records   Record[]
+  beatStops BeatOutlet[]
+  visits    Visit[]
+  orders    Order[]
+  payments  Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId, status])
+  @@index([projectId, zone])
+  @@index([projectId, phoneKey])
+  @@index([projectId, codeKey])
+  @@index([projectId, latitude, longitude])
+  @@index([name(ops: raw("gin_trgm_ops"))], type: Gin)
+  @@map("outlets")
+}
+
+// ─────────────────────────────── Planning: Beats & Routes ───────────────────────────────
+
+// Beat (Workzone): conjunto fixo de lojas visitado de forma recorrente
+model Beat {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  // Dias da semana em que o beat é executado (0=Domingo ... 6=Sábado)
+  weekdays    Int[]   @default([])
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  assigneeId String?
+  assignee   User?   @relation(fields: [assigneeId], references: [id], onDelete: SetNull)
+
+  outlets BeatOutlet[]
+  routes  Route[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+  @@map("beats")
+}
+
+model BeatOutlet {
+  beatId     String
+  beat       Beat   @relation(fields: [beatId], references: [id], onDelete: Cascade)
+  outletId   String
+  outlet     Outlet @relation(fields: [outletId], references: [id], onDelete: Cascade)
+  orderIndex Int    @default(0)
+
+  @@id([beatId, outletId])
+  @@map("beat_outlets")
+}
+
+// Plano diário / rota otimizada de um promotor
+model Route {
+  id   String   @id @default(uuid())
+  name String
+  date DateTime
+
+  startLat Float?
+  startLng Float?
+  endLat   Float?
+  endLng   Float?
+
+  totalDistance Float? // km
+  estimatedMins Int?
+  optimizedBy   String? // GOOGLE | NEAREST_NEIGHBOUR | NONE
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  assigneeId String
+  assignee   User   @relation(fields: [assigneeId], references: [id])
+
+  beatId String?
+  beat   Beat?   @relation(fields: [beatId], references: [id], onDelete: SetNull)
+
+  tasks Task[]
+
+  createdAt DateTime @default(now())
+
+  @@index([projectId, date])
+  @@map("routes")
+}
+
+// Visita agendada (paragem de uma rota ou tarefa ad-hoc)
+model Task {
+  id      String     @id @default(uuid())
+  title   String?
+  notes   String?
+  status  TaskStatus @default(PENDING)
+  dueDate DateTime
+
+  routeId    String?
+  route      Route?    @relation(fields: [routeId], references: [id], onDelete: SetNull)
+  orderIndex Int       @default(0)
+  estArrival DateTime?
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  outletId String
+  outlet   Outlet @relation(fields: [outletId], references: [id], onDelete: Cascade)
+
+  assigneeId String
+  assignee   User   @relation(fields: [assigneeId], references: [id])
+
+  visits Visit[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId, dueDate])
+  @@index([assigneeId, dueDate])
+  @@index([routeId, orderIndex])
+  @@index([outletId])
+  @@map("tasks")
+}
+
+// ─────────────────────────────── Execution: Visits & Attendance ───────────────────────────────
+
+// Check-in / check-out numa loja com validação GPS
+model Visit {
+  id String @id @default(uuid())
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  outletId  String
+  outlet    Outlet  @relation(fields: [outletId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  taskId    String?
+  task      Task?   @relation(fields: [taskId], references: [id], onDelete: SetNull)
+
+  checkInAt      DateTime @default(now())
+  checkInLat     Float?
+  checkInLng     Float?
+  distanceM      Float? // Distância à loja no check-in
+  withinGeofence Boolean  @default(true)
+
+  checkOutAt   DateTime?
+  checkOutLat  Float?
+  checkOutLng  Float?
+  durationMins Int?
+
+  isProductive  Boolean  @default(false) // Gerou encomenda
+  noOrderReason String?
+  notes         String?
+  photoUrls     String[] @default([])
+
+  orders Order[]
+
+  @@index([projectId, checkInAt])
+  @@index([userId, checkInAt])
+  @@index([outletId, checkInAt])
+  @@map("visits")
+}
+
+model Attendance {
+  id        String  @id @default(uuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  date        DateTime  @db.Date
+  clockInAt   DateTime  @default(now())
+  clockInLat  Float?
+  clockInLng  Float?
+  clockOutAt  DateTime?
+  clockOutLat Float?
+  clockOutLng Float?
+  selfieUrl   String?
+
+  @@unique([userId, projectId, date])
+  @@map("attendances")
+}
+
+// ─────────────────────────────── Selling: Products, Orders, Payments ───────────────────────────────
+
+model Product {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  sku            String
+  name           String
+  brand          String?
+  category       String?
+  unit           String       @default("UN")
+  price          Float
+  taxRate        Float        @default(0) // percentagem, ex: 16
+  isActive       Boolean      @default(true)
+  isMustSell     Boolean      @default(false) // MSL - Must Sell List
+
+  orderItems OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, sku])
+  @@map("products")
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  number    String // Ex: ORD-000123
+  status    OrderStatus @default(SUBMITTED)
+  projectId String
+  project   Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  outletId  String
+  outlet    Outlet      @relation(fields: [outletId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  visitId   String?
+  visit     Visit?      @relation(fields: [visitId], references: [id], onDelete: SetNull)
+
+  subtotal Float   @default(0)
+  discount Float   @default(0)
+  tax      Float   @default(0)
+  total    Float   @default(0)
+  notes    String?
+
+  items OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([projectId, number])
+  @@index([projectId, createdAt])
+  @@index([outletId, createdAt])
+  @@index([userId, createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Float
+  unitPrice Float
+  discount  Float   @default(0)
+  taxRate   Float   @default(0)
+  lineTotal Float
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_items")
+}
+
+model Payment {
+  id        String        @id @default(uuid())
+  outletId  String
+  outlet    Outlet        @relation(fields: [outletId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User          @relation(fields: [userId], references: [id])
+  amount    Float
+  method    PaymentMethod @default(CASH)
+  reference String?
+  notes     String?
+  createdAt DateTime      @default(now())
+
+  @@index([outletId, createdAt])
+  @@map("payments")
+}
+
+// ─────────────────────────────── Data: Datasets & Records (formulários / Excel) ───────────────────────────────
+
+model Dataset {
+  id        String  @id @default(uuid())
+  name      String
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Metadados das colunas (Ex: "col_1" -> { label: "Nome", type: "string", active: true })
+  schema Json
+
+  status   DatasetStatus @default(READY)
+  // Nº de registos ativos (evita COUNT(*) em datasets com milhões de linhas)
+  rowCount Int           @default(0)
+
+  records    Record[]
+  importJobs ImportJob[]
+  counters   DatasetCounter[]
+  createdAt  DateTime         @default(now())
+
+  @@index([projectId, createdAt])
+  @@map("datasets")
+}
+
+// Cada linha de Excel ou resposta de formulário
+model Record {
+  id        String  @id @default(uuid())
+  // Ordem estável de inserção: paginação por cursor rápida mesmo com milhões de linhas
+  seq       BigInt  @default(autoincrement())
+  datasetId String
+  dataset   Dataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+
+  outletId String?
+  outlet   Outlet? @relation(fields: [outletId], references: [id], onDelete: SetNull)
+
+  data Json
+
+  gpsLat Float?
+  gpsLng Float?
+
+  // Quem recolheu (auditor). Depois de submetido, o auditor já não pode alterar o registo.
+  submittedById String?
+  submittedBy   User?   @relation("RecordSubmittedBy", fields: [submittedById], references: [id], onDelete: SetNull)
+
+  // Última correção feita por supervisor/analista
+  updatedById String?
+  updatedBy   User?     @relation("RecordUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+  updatedAt   DateTime?
+
+  // Remoção lógica: o registo deixa de aparecer mas nunca se perde
+  deletedById String?
+  deletedBy   User?     @relation("RecordDeletedBy", fields: [deletedById], references: [id], onDelete: SetNull)
+  deletedAt   DateTime?
+
+  revisions RecordRevision[]
+
+  createdAt DateTime @default(now())
+
+  @@index([datasetId, seq])
+  @@index([datasetId, submittedById, seq])
+  @@index([outletId])
+  @@map("records")
+}
+
+enum RevisionAction {
+  UPDATE
+  DELETE
+  RESTORE
+}
+
+// Histórico imutável de cada alteração feita a dados recolhidos (auditoria)
+model RecordRevision {
+  id           String         @id @default(uuid())
+  recordId     String
+  record       Record         @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  action       RevisionAction
+  editedById   String
+  editedBy     User           @relation(fields: [editedById], references: [id])
+  previousData Json
+  newData      Json?
+  reason       String?
+  createdAt    DateTime       @default(now())
+
+  @@index([recordId, createdAt])
+  @@map("record_revisions")
+}
+
+// ─────────────────────────────── Importações em segundo plano ───────────────────────────────
+
+enum DatasetStatus {
+  PROCESSING // importação em curso
+  READY
+  FAILED
+}
+
+enum ImportKind {
+  DATASET // linhas de Excel/CSV para um dataset
+  OUTLETS // lista mestre de lojas/clientes
+}
+
+enum JobStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+// Ficheiro grande (até centenas de MB) processado por um worker, fora do pedido HTTP
+model ImportJob {
+  id             String     @id @default(uuid())
+  organizationId String
+  projectId      String
+  project        Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  datasetId      String?
+  dataset        Dataset?   @relation(fields: [datasetId], references: [id], onDelete: SetNull)
+  createdById    String
+  createdBy      User       @relation(fields: [createdById], references: [id])
+  kind           ImportKind
+  status         JobStatus  @default(QUEUED)
+
+  storageKey String // Ficheiro no armazenamento (disco local ou S3/R2)
+  fileName   String
+  fileSize   BigInt  @default(0)
+  format     String // xlsx | xls | csv
+  sheetName  String? // Folha a importar (por defeito a primeira)
+  targetName String? // Nome do dataset a criar
+
+  rowsProcessed   Int     @default(0)
+  rowsFailed      Int     @default(0)
+  rowErrors       Json? // Primeiros erros por linha
+  error           String?
+  cancelRequested Boolean @default(false)
+  attempts        Int     @default(0)
+
+  heartbeatAt DateTime?
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([status, createdAt])
+  @@index([projectId, createdAt])
+  @@map("import_jobs")
+}
+
+// Contador repartido de registos submetidos no terreno (16 fatias por dataset).
+// Cada submissão soma 1 numa fatia ao acaso, na mesma instrução que grava o registo:
+// a contagem é sempre exata e centenas de auditores não ficam à espera da mesma linha.
+// Total de registos = datasets.rowCount (importações, remoções) + soma das fatias.
+model DatasetCounter {
+  datasetId String
+  dataset   Dataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  shard     Int
+  n         Int     @default(0)
+
+  @@id([datasetId, shard])
+  @@map("dataset_counters")
+}

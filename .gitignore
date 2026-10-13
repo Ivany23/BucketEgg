@@ -1,0 +1,33 @@
+# Dependências e builds
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Segredos: NUNCA fazer commit do .env real (use .env.example como modelo)
+.env
+.env.*
+!.env.example
+
+# Ficheiros importados guardados localmente (STORAGE_DRIVER=local)
+storage/
+
+# Backups da base de dados (contêm dados reais)
+backups/
+
+# Next.js / Vercel
+.next/
+out/
+.vercel/
+next-env.d.ts
+
+# Armazenamento local de demonstração e testes
+storage-*/
+apps/api/storage*/
+
+# Relatórios de testes e ferramentas
+playwright-report/
+test-results/
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,51 @@
+# Infraestrutura de DESENVOLVIMENTO local (não usar estas credenciais em produção).
+#
+#   docker compose up -d                  -> PostgreSQL
+#   docker compose --profile api up -d    -> também a API em contentor (http://localhost:3000/docs)
+#
+# Produção: frontend Next.js na Vercel; API em contentor (apps/api/Dockerfile) num serviço como
+# Railway/Render/Fly.io/Cloud Run; base de dados Neon; ficheiros em Cloudflare R2 ou AWS S3
+# (STORAGE_DRIVER=s3). Ver docs/architecture.md, secção "Deploy".
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: data_platform
+      # Igual à Neon: UTF-8, para os acentos (ç, ã, é) serem guardados corretamente
+      POSTGRES_INITDB_ARGS: --encoding=UTF8 --locale=C.UTF-8
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d data_platform"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    profiles: ["api"]
+    build: ./apps/api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/data_platform
+      DIRECT_DATABASE_URL: postgresql://postgres:postgres@postgres:5432/data_platform
+      JWT_SECRET: dev-only-docker-compose-secret-change-me-0123456789
+      CORS_ORIGINS: http://localhost:3001
+      STORAGE_DRIVER: local
+      UPLOAD_MAX_MB: "500"
+    ports:
+      - "3000:3000"
+    volumes:
+      - uploads:/app/storage
+    # Aplica as migrações e arranca a API
+    command: ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
+
+volumes:
+  pgdata:
+  uploads:

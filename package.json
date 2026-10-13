@@ -1,0 +1,9 @@
+{
+  "name": "data-platform",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:api": "npm run start:dev --prefix apps/api",
+    "dev:web": "npm run dev --prefix apps/web"
+  }
+}

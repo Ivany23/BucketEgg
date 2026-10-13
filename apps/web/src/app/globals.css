@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+/*
+ * BucketEgg — sistema de design
+ * Marca: laranja. Cada módulo tem a sua cor ("uma cor por instrução"), sempre com contraste
+ * verificado (WCAG AA ≥ 4,5:1 para texto): botões laranja vivos com texto escuro (≈7:1),
+ * texto laranja sobre branco em #c2410c (5,2:1).
+ * Tema: segue o sistema; o botão de tema grava data-theme="light|dark" em <html>.
+ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  color-scheme: light;
+  --bg: #fbf8f5;
+  --surface: #ffffff;
+  --surface-2: #f6f1ec;
+  --surface-3: #efe7df;
+  --border: #eadfd4;
+  --border-strong: #d9c9b9;
+  --text: #1c140e;
+  --text-2: #5b4d42;
+  --text-3: #85766a;
+  --brand: #f97316; /* laranja vivo (fundos, ícones, destaques) */
+  --brand-strong: #ea580c;
+  --brand-ink: #1f0e03; /* texto sobre o laranja vivo */
+  --brand-text: #c2410c; /* texto laranja sobre fundos claros */
+  --brand-soft: #fff1e6;
+  --ring: #f97316;
+  --shadow-color: 28 20 14;
+
+  /* Cores por módulo: solid (ícone/realce), text (texto AA), soft (fundo suave) */
+  --m-painel: #f97316; --m-painel-text: #c2410c; --m-painel-soft: #fff1e6;
+  --m-dia: #f59e0b; --m-dia-text: #b45309; --m-dia-soft: #fff7e0;
+  --m-rotas: #3b82f6; --m-rotas-text: #2563eb; --m-rotas-soft: #e8f0ff;
+  --m-beats: #8b5cf6; --m-beats-text: #7c3aed; --m-beats-soft: #f1ebff;
+  --m-lojas: #14b8a6; --m-lojas-text: #0f766e; --m-lojas-soft: #e2f8f5;
+  --m-visitas: #22c55e; --m-visitas-text: #15803d; --m-visitas-soft: #e6f8ec;
+  --m-vendas: #ec4899; --m-vendas-text: #db2777; --m-vendas-soft: #fde8f3;
+  --m-produtos: #ef4444; --m-produtos-text: #dc2626; --m-produtos-soft: #fdeaea;
+  --m-dados: #6366f1; --m-dados-text: #4f46e5; --m-dados-soft: #ecebff;
+  --m-import: #0ea5e9; --m-import-text: #0369a1; --m-import-soft: #e3f4fc;
+  --m-equipa: #a855f7; --m-equipa-text: #7e22ce; --m-equipa-soft: #f5e9ff;
+  --m-config: #64748b; --m-config-text: #475569; --m-config-soft: #eef1f5;
+
+  /* Estados (reservados: nunca usados como "série") */
+  --ok: #15803d; --ok-soft: #e6f8ec;
+  --warn: #b45309; --warn-soft: #fff4dc;
+  --bad: #dc2626; --bad-soft: #fdeaea;
+  --info: #2563eb; --info-soft: #e8f0ff;
+
+  /* Gráficos — paleta categórica validada (laranja primeiro), tema claro */
+  --chart-surface: #fcfcfb;
+  --series-1: #eb6834; --series-2: #2a78d6; --series-3: #1baf7a;
+  --series-4: #6250d6; --series-5: #e87ba4; --series-6: #008300;
+  --grid: #ece6e0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --bg: #110d0a; --surface: #1a1410; --surface-2: #221a15; --surface-3: #2c221b;
+    --border: #33281f; --border-strong: #46382c;
+    --text: #f6efe8; --text-2: #cbbcaf; --text-3: #9c8c7f;
+    --brand: #fb923c; --brand-strong: #f97316; --brand-ink: #1f0e03; --brand-text: #fb923c; --brand-soft: #2d1c10;
+    --ring: #fb923c; --shadow-color: 0 0 0;
+    --m-painel: #fb923c; --m-painel-text: #fb923c; --m-painel-soft: #2d1c10;
+    --m-dia: #fbbf24; --m-dia-text: #fbbf24; --m-dia-soft: #2c2310;
+    --m-rotas: #60a5fa; --m-rotas-text: #60a5fa; --m-rotas-soft: #16213a;
+    --m-beats: #a78bfa; --m-beats-text: #a78bfa; --m-beats-soft: #231a3a;
+    --m-lojas: #2dd4bf; --m-lojas-text: #2dd4bf; --m-lojas-soft: #0f2a27;
+    --m-visitas: #4ade80; --m-visitas-text: #4ade80; --m-visitas-soft: #112a19;
+    --m-vendas: #f472b6; --m-vendas-text: #f472b6; --m-vendas-soft: #33152a;
+    --m-produtos: #f87171; --m-produtos-text: #f87171; --m-produtos-soft: #331616;
+    --m-dados: #818cf8; --m-dados-text: #818cf8; --m-dados-soft: #1c1d3d;
+    --m-import: #38bdf8; --m-import-text: #38bdf8; --m-import-soft: #0d2735;
+    --m-equipa: #c084fc; --m-equipa-text: #c084fc; --m-equipa-soft: #2a1838;
+    --m-config: #94a3b8; --m-config-text: #94a3b8; --m-config-soft: #1e232b;
+    --ok: #4ade80; --ok-soft: #112a19; --warn: #fbbf24; --warn-soft: #2c2310;
+    --bad: #f87171; --bad-soft: #331616; --info: #60a5fa; --info-soft: #16213a;
+    --chart-surface: #1a1a19;
+    --series-1: #d95926; --series-2: #3987e5; --series-3: #199e70;
+    --series-4: #9085e9; --series-5: #d55181; --series-6: #008300;
+    --grid: #2e2620;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #110d0a; --surface: #1a1410; --surface-2: #221a15; --surface-3: #2c221b;
+  --border: #33281f; --border-strong: #46382c;
+  --text: #f6efe8; --text-2: #cbbcaf; --text-3: #9c8c7f;
+  --brand: #fb923c; --brand-strong: #f97316; --brand-ink: #1f0e03; --brand-text: #fb923c; --brand-soft: #2d1c10;
+  --ring: #fb923c; --shadow-color: 0 0 0;
+  --m-painel: #fb923c; --m-painel-text: #fb923c; --m-painel-soft: #2d1c10;
+  --m-dia: #fbbf24; --m-dia-text: #fbbf24; --m-dia-soft: #2c2310;
+  --m-rotas: #60a5fa; --m-rotas-text: #60a5fa; --m-rotas-soft: #16213a;
+  --m-beats: #a78bfa; --m-beats-text: #a78bfa; --m-beats-soft: #231a3a;
+  --m-lojas: #2dd4bf; --m-lojas-text: #2dd4bf; --m-lojas-soft: #0f2a27;
+  --m-visitas: #4ade80; --m-visitas-text: #4ade80; --m-visitas-soft: #112a19;
+  --m-vendas: #f472b6; --m-vendas-text: #f472b6; --m-vendas-soft: #33152a;
+  --m-produtos: #f87171; --m-produtos-text: #f87171; --m-produtos-soft: #331616;
+  --m-dados: #818cf8; --m-dados-text: #818cf8; --m-dados-soft: #1c1d3d;
+  --m-import: #38bdf8; --m-import-text: #38bdf8; --m-import-soft: #0d2735;
+  --m-equipa: #c084fc; --m-equipa-text: #c084fc; --m-equipa-soft: #2a1838;
+  --m-config: #94a3b8; --m-config-text: #94a3b8; --m-config-soft: #1e232b;
+  --ok: #4ade80; --ok-soft: #112a19; --warn: #fbbf24; --warn-soft: #2c2310;
+  --bad: #f87171; --bad-soft: #331616; --info: #60a5fa; --info-soft: #16213a;
+  --chart-surface: #1a1a19;
+  --series-1: #d95926; --series-2: #3987e5; --series-3: #199e70;
+  --series-4: #9085e9; --series-5: #d55181; --series-6: #008300;
+  --grid: #2e2620;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text);
+  --color-ink-2: var(--text-2);
+  --color-ink-3: var(--text-3);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-text: var(--brand-text);
+  --color-brand-soft: var(--brand-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, monospace;
+  --radius-xl2: 1.25rem;
+}
+
+/* Módulo ativo: as páginas definem data-module e herdam a cor */
+[data-module] {
+  --accent: var(--m-painel);
+  --accent-text: var(--m-painel-text);
+  --accent-soft: var(--m-painel-soft);
+}
+[data-module="dia"] { --accent: var(--m-dia); --accent-text: var(--m-dia-text); --accent-soft: var(--m-dia-soft); }
+[data-module="rotas"] { --accent: var(--m-rotas); --accent-text: var(--m-rotas-text); --accent-soft: var(--m-rotas-soft); }
+[data-module="beats"] { --accent: var(--m-beats); --accent-text: var(--m-beats-text); --accent-soft: var(--m-beats-soft); }
+[data-module="lojas"] { --accent: var(--m-lojas); --accent-text: var(--m-lojas-text); --accent-soft: var(--m-lojas-soft); }
+[data-module="visitas"] { --accent: var(--m-visitas); --accent-text: var(--m-visitas-text); --accent-soft: var(--m-visitas-soft); }
+[data-module="vendas"] { --accent: var(--m-vendas); --accent-text: var(--m-vendas-text); --accent-soft: var(--m-vendas-soft); }
+[data-module="produtos"] { --accent: var(--m-produtos); --accent-text: var(--m-produtos-text); --accent-soft: var(--m-produtos-soft); }
+[data-module="dados"] { --accent: var(--m-dados); --accent-text: var(--m-dados-text); --accent-soft: var(--m-dados-soft); }
+[data-module="import"] { --accent: var(--m-import); --accent-text: var(--m-import-text); --accent-soft: var(--m-import-soft); }
+[data-module="equipa"] { --accent: var(--m-equipa); --accent-text: var(--m-equipa-text); --accent-soft: var(--m-equipa-soft); }
+[data-module="config"] { --accent: var(--m-config); --accent-text: var(--m-config-text); --accent-soft: var(--m-config-soft); }
+
+html {
+  background: var(--bg);
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Foco visível e consistente (teclado) */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Sombras quentes, suaves */
+.shadow-soft { box-shadow: 0 1px 2px rgb(var(--shadow-color) / 0.06), 0 4px 16px -4px rgb(var(--shadow-color) / 0.08); }
+.shadow-lift { box-shadow: 0 2px 4px rgb(var(--shadow-color) / 0.06), 0 16px 40px -12px rgb(var(--shadow-color) / 0.22); }
+
+/* Esqueleto de carregamento com brilho a passar */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
+  animation: shimmer 1.4s infinite;
+}
+[data-theme="dark"] .skeleton::after { background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.06), transparent); }
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+
+/* Fundo decorativo com brilho laranja */
+.glow-orange {
+  background:
+    radial-gradient(60rem 30rem at 10% -10%, color-mix(in oklab, var(--brand) 18%, transparent), transparent 60%),
+    radial-gradient(40rem 24rem at 100% 0%, color-mix(in oklab, var(--m-vendas) 10%, transparent), transparent 60%),
+    var(--bg);
+}
+
+.scrollbar-thin { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+
+/* Leaflet: no tema escuro os mosaicos claros do mapa ficam escuros (só os mosaicos, não os marcadores) */
+.be-map[data-dark] .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9) saturate(0.6); }
+/* Leaflet: cores do tema nos controlos */
+.leaflet-container { font-family: var(--font-sans); background: var(--surface-2); }
+.leaflet-control-attribution { font-size: 10px; }
+
+
+/* Tela inicial: faixa infinita, flutuação suave, grelha de pontos e brilho a girar */
+@keyframes be-marquee { to { transform: translateX(-50%); } }
+.be-marquee { animation: be-marquee 38s linear infinite; }
+.be-marquee:hover { animation-play-state: paused; }
+@keyframes be-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.be-float { animation: be-float 6s ease-in-out infinite; }
+.be-float-slow { animation: be-float 9s ease-in-out infinite; }
+@keyframes be-spin { to { transform: rotate(360deg); } }
+.be-spin-slow { animation: be-spin 24s linear infinite; }
+@keyframes be-ping { 0% { transform: scale(1); opacity: .55; } 80%, 100% { transform: scale(2.6); opacity: 0; } }
+.be-ping { animation: be-ping 2.2s cubic-bezier(0, 0, .2, 1) infinite; transform-box: fill-box; transform-origin: center; }
+.be-dots {
+  background-image: radial-gradient(color-mix(in oklab, var(--text) 14%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+.be-gradient-text {
+  background: linear-gradient(90deg, #f97316, #ec4899, #8b5cf6, #3b82f6, #f97316);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: be-shift 10s ease-in-out infinite;
+}
+@keyframes be-shift { 50% { background-position: 100% 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after { animation: none; }
+  .be-marquee, .be-float, .be-float-slow, .be-spin-slow, .be-ping, .be-gradient-text { animation: none; }
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}

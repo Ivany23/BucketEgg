@@ -1,0 +1,13 @@
+# Dependências e builds
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Segredos: NUNCA fazer commit do .env real (use .env.example como modelo)
+.env
+.env.*
+!.env.example
+
+# Ficheiros importados guardados localmente (STORAGE_DRIVER=local)
+storage/

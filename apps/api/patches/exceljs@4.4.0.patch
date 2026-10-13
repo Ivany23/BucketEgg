@@ -1,0 +1,35 @@
+diff --git a/lib/utils/parse-sax.js b/lib/utils/parse-sax.js
+index 14c682a731b5e51f999859a03ce4dd4e0bfcbb26..6ba98fe8e70c1367972b17a7e372dbc19ecae24c 100644
+--- a/lib/utils/parse-sax.js
++++ b/lib/utils/parse-sax.js
+@@ -1,6 +1,5 @@
+ const {SaxesParser} = require('saxes');
+ const {PassThrough} = require('readable-stream');
+-const {bufferToString} = require('./browser-buffer-decode');
+ 
+ module.exports = async function* (iterable) {
+   // TODO: Remove once node v8 is deprecated
+@@ -17,8 +16,11 @@ module.exports = async function* (iterable) {
+   saxesParser.on('opentag', value => events.push({eventType: 'opentag', value}));
+   saxesParser.on('text', value => events.push({eventType: 'text', value}));
+   saxesParser.on('closetag', value => events.push({eventType: 'closetag', value}));
++  // PATCH (BucketEgg): decode with a streaming TextDecoder so multi-byte UTF-8 characters
++  // (é, ç, ã, —) split across chunk boundaries are not corrupted into U+FFFD.
++  const decoder = new TextDecoder('utf-8');
+   for await (const chunk of iterable) {
+-    saxesParser.write(bufferToString(chunk));
++    saxesParser.write(typeof chunk === 'string' ? chunk : decoder.decode(chunk, {stream: true}));
+     // saxesParser.write and saxesParser.on() are synchronous,
+     // so we can only reach the below line once all events have been emitted
+     if (error) throw error;
+@@ -27,4 +29,10 @@ module.exports = async function* (iterable) {
+     yield events;
+     events = [];
+   }
++  const rest = decoder.decode();
++  if (rest) {
++    saxesParser.write(rest);
++    if (error) throw error;
++    yield events;
++  }
+ };

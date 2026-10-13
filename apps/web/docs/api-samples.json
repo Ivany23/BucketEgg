@@ -1,0 +1,1681 @@
+{
+ "POST /auth/login": {
+  "access_token": "<token JWT>",
+  "user": {
+   "id": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+   "email": "dono@bucketegg.demo",
+   "name": "Zeneen Dono"
+  },
+  "organization": {
+   "id": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+   "name": "BucketEgg Distribuição",
+   "role": "OWNER"
+  },
+  "needsOnboarding": false
+ },
+ "GET /auth/me": {
+  "status": 200,
+  "body": {
+   "id": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+   "email": "dono@bucketegg.demo",
+   "name": "Zeneen Dono",
+   "phone": null,
+   "createdAt": "2026-10-12T20:02:28.259Z",
+   "memberships": [
+    {
+     "id": "62d4c14d-b1cc-49e7-9e98-29f3f8d4576f",
+     "role": "OWNER",
+     "organization": {
+      "id": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+      "name": "BucketEgg Distribuição",
+      "slug": "bucketegg-distribuicao-9b4b82"
+     }
+    }
+   ],
+   "activeOrganizationId": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+   "activeRole": "OWNER"
+  }
+ },
+ "GET /organizations": {
+  "status": 200,
+  "body": [
+   {
+    "id": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+    "name": "BucketEgg Distribuição",
+    "slug": "bucketegg-distribuicao-9b4b82",
+    "currency": "MZN",
+    "timezone": "Africa/Maputo",
+    "geofenceRadiusM": 150,
+    "createdAt": "2026-10-12T20:02:28.825Z",
+    "updatedAt": "2026-10-12T20:02:33.448Z",
+    "memberships": [
+     {
+      "role": "OWNER"
+     }
+    ],
+    "_count": {
+     "projects": 2,
+     "memberships": 10
+    }
+   }
+  ]
+ },
+ "GET /organizations/current": {
+  "status": 200,
+  "body": {
+   "id": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+   "name": "BucketEgg Distribuição",
+   "slug": "bucketegg-distribuicao-9b4b82",
+   "currency": "MZN",
+   "timezone": "Africa/Maputo",
+   "geofenceRadiusM": 150,
+   "createdAt": "2026-10-12T20:02:28.825Z",
+   "updatedAt": "2026-10-12T20:02:33.448Z",
+   "_count": {
+    "projects": 2,
+    "memberships": 10,
+    "products": 12
+   }
+  }
+ },
+ "GET /projects": {
+  "status": 200,
+  "body": [
+   {
+    "id": "519a0c1e-4f80-4b54-a20e-388e4368788a",
+    "name": "Auditoria de Prateleira",
+    "category": "Trade marketing",
+    "description": "Visibilidade, preços e validade nos pontos de venda",
+    "isArchived": false,
+    "orderSeq": 0,
+    "organizationId": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+    "createdAt": "2026-10-12T20:03:44.677Z",
+    "updatedAt": "2026-10-12T20:03:44.677Z",
+    "_count": {
+     "datasets": 1,
+     "outlets": 8,
+     "beats": 0,
+     "routes": 0,
+     "orders": 0
+    }
+   },
+   {
+    "id": "d757d778-d147-4468-915c-d62ffaedc424",
+    "name": "Distribuição Maputo",
+    "category": "Bebidas",
+    "description": "Venda e reposição no retalho tradicional de Maputo e Matola",
+    "isArchived": false,
+    "orderSeq": 10,
+    "organizationId": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+    "createdAt": "2026-10-12T20:03:44.125Z",
+    "updatedAt": "2026-10-12T20:08:04.381Z",
+    "_count": {
+     "datasets": 1,
+     "outlets": 51,
+     "beats": 6,
+     "routes": 13,
+     "orders": 10
+    }
+   }
+  ]
+ },
+ "GET /projects/:id": {
+  "status": 200,
+  "body": {
+   "id": "d757d778-d147-4468-915c-d62ffaedc424",
+   "name": "Distribuição Maputo",
+   "category": "Bebidas",
+   "description": "Venda e reposição no retalho tradicional de Maputo e Matola",
+   "isArchived": false,
+   "orderSeq": 10,
+   "organizationId": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+   "createdAt": "2026-10-12T20:03:44.125Z",
+   "updatedAt": "2026-10-12T20:08:04.381Z",
+   "_count": {
+    "datasets": 1,
+    "outlets": 51,
+    "beats": 6,
+    "routes": 13,
+    "orders": 10
+   }
+  }
+ },
+ "GET /team": {
+  "status": 200,
+  "body": [
+   {
+    "id": "62d4c14d-b1cc-49e7-9e98-29f3f8d4576f",
+    "role": "OWNER",
+    "isActive": true,
+    "createdAt": "2026-10-12T20:02:28.825Z",
+    "user": {
+     "id": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+     "email": "dono@bucketegg.demo",
+     "name": "Zeneen Dono",
+     "phone": null,
+     "isActive": true
+    },
+    "supervisors": [],
+    "supervising": []
+   },
+   {
+    "id": "fba4e970-9ce0-40bd-9dd8-a28589f59669",
+    "role": "MANAGER",
+    "isActive": true,
+    "createdAt": "2026-10-12T20:02:35.843Z",
+    "user": {
+     "id": "21c63090-6963-4a38-a4a2-17f5b616d52d",
+     "email": "ana.machava@bucketegg.demo",
+     "name": "Ana Machava",
+     "phone": "+258841000000",
+     "isActive": true
+    },
+    "supervisors": [],
+    "supervising": [
+     {
+      "id": "7f6a0886-b6cb-4a46-a54a-82a401874f08",
+      "role": "FIELD_REP",
+      "user": {
+       "id": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+       "name": "João Mabunda",
+       "email": "joao.mabunda@bucketegg.demo"
+      }
+     },
+     {
+      "id": "02a58859-3719-42be-b18f-91be017316d3",
+      "role": "FIELD_REP",
+      "user": {
+       "id": "f335f7a2-8df7-44a3-9f26-32459f842282",
+       "name": "Maria Sitoe",
+       "email": "maria.sitoe@bucketegg.demo"
+      }
+     },
+     "…(+1)"
+    ]
+   },
+   "…(+8)"
+  ]
+ },
+ "GET /team/mine (manager)": {
+  "status": 200,
+  "body": [
+   {
+    "id": "7f6a0886-b6cb-4a46-a54a-82a401874f08",
+    "role": "FIELD_REP",
+    "isActive": true,
+    "createdAt": "2026-10-12T20:02:47.343Z",
+    "user": {
+     "id": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+     "email": "joao.mabunda@bucketegg.demo",
+     "name": "João Mabunda",
+     "phone": "+258841040737",
+     "isActive": true
+    },
+    "supervisors": [
+     {
+      "id": "fba4e970-9ce0-40bd-9dd8-a28589f59669",
+      "role": "MANAGER",
+      "user": {
+       "id": "21c63090-6963-4a38-a4a2-17f5b616d52d",
+       "name": "Ana Machava",
+       "email": "ana.machava@bucketegg.demo"
+      }
+     }
+    ],
+    "supervising": []
+   },
+   {
+    "id": "02a58859-3719-42be-b18f-91be017316d3",
+    "role": "FIELD_REP",
+    "isActive": true,
+    "createdAt": "2026-10-12T20:02:49.891Z",
+    "user": {
+     "id": "f335f7a2-8df7-44a3-9f26-32459f842282",
+     "email": "maria.sitoe@bucketegg.demo",
+     "name": "Maria Sitoe",
+     "phone": "+258841054316",
+     "isActive": true
+    },
+    "supervisors": [
+     {
+      "id": "fba4e970-9ce0-40bd-9dd8-a28589f59669",
+      "role": "MANAGER",
+      "user": {
+       "id": "21c63090-6963-4a38-a4a2-17f5b616d52d",
+       "name": "Ana Machava",
+       "email": "ana.machava@bucketegg.demo"
+      }
+     }
+    ],
+    "supervising": []
+   },
+   "…(+1)"
+  ]
+ },
+ "GET /projects/:id/outlets": {
+  "status": 200,
+  "body": {
+   "data": [
+    {
+     "id": "d8379216-0a95-4411-aa8b-1855037af02d",
+     "code": null,
+     "name": "Banca Mercado Central",
+     "address": null,
+     "phone": null,
+     "phoneKey": null,
+     "codeKey": null,
+     "contactName": null,
+     "channel": "Barraca",
+     "outletClass": null,
+     "visitFrequencyDays": 7,
+     "latitude": null,
+     "longitude": null,
+     "status": "ACTIVE",
+     "potentialScore": 0,
+     "zone": "KaMpfumo",
+     "lastVisitedAt": null,
+     "creditLimit": 0,
+     "balance": 0,
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+     "createdAt": "2026-10-12T20:04:08.553Z",
+     "updatedAt": "2026-10-12T20:04:08.553Z"
+    },
+    {
+     "id": "559c5987-bea2-4579-b853-cdddd7cd76ff",
+     "code": "MPT-0018",
+     "name": "Bar Avenida Sommerschield",
+     "address": "Bairro Sommerschield, Maputo",
+     "phone": "+258823134623",
+     "phoneKey": "823134623",
+     "codeKey": "mpt-0018",
+     "contactName": "Sr. Langa",
+     "channel": "Bar",
+     "outletClass": "B",
+     "visitFrequencyDays": 7,
+     "latitude": -25.949887,
+     "longitude": 32.585804,
+     "status": "ACTIVE",
+     "potentialScore": 3,
+     "zone": "KaMpfumo",
+     "lastVisitedAt": null,
+     "creditLimit": 5000,
+     "balance": 0,
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+     "createdAt": "2026-10-12T20:03:56.052Z",
+     "updatedAt": "2026-10-12T20:03:56.052Z"
+    },
+    "…(+1)"
+   ],
+   "meta": {
+    "total": 51,
+    "page": 1,
+    "limit": 3,
+    "pages": 17
+   }
+  }
+ },
+ "GET /projects/:id/outlets/overdue": {
+  "status": 200,
+  "body": [
+   {
+    "id": "bd6dcd49-e662-43ad-b7db-8484bbc0dc01",
+    "code": "MPT-0027",
+    "name": "Bottle Store Estrela Chamanculo",
+    "address": "Bairro Chamanculo, Maputo",
+    "phone": "+258823205894",
+    "phoneKey": "823205894",
+    "codeKey": "mpt-0027",
+    "contactName": "Sra. Cumbe",
+    "channel": "Bottle store",
+    "outletClass": "B",
+    "visitFrequencyDays": 14,
+    "latitude": -25.948016,
+    "longitude": 32.554674,
+    "status": "ACTIVE",
+    "potentialScore": 6,
+    "zone": "KaMpfumo",
+    "lastVisitedAt": null,
+    "creditLimit": 15000,
+    "balance": 0,
+    "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+    "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+    "createdAt": "2026-10-12T20:04:01.852Z",
+    "updatedAt": "2026-10-12T20:04:01.852Z",
+    "daysSinceLastVisit": null,
+    "overdueDays": 14,
+    "priority": 14.8
+   },
+   {
+    "id": "fab9a55d-4673-4e9b-9345-7394acfad9b1",
+    "code": "MPT-0006",
+    "name": "Bar Dona Amélia Xipamanine",
+    "address": "Bairro Xipamanine, Maputo",
+    "phone": "+258823039595",
+    "phoneKey": "823039595",
+    "codeKey": "mpt-0006",
+    "contactName": "Sr. Matsinhe",
+    "channel": "Bar",
+    "outletClass": "B",
+    "visitFrequencyDays": 7,
+    "latitude": -25.950415,
+    "longitude": 32.563176,
+    "status": "ACTIVE",
+    "potentialScore": 9,
+    "zone": "KaMpfumo",
+    "lastVisitedAt": null,
+    "creditLimit": 5000,
+    "balance": 0,
+    "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+    "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+    "createdAt": "2026-10-12T20:03:48.874Z",
+    "updatedAt": "2026-10-12T20:03:48.874Z",
+    "daysSinceLastVisit": null,
+    "overdueDays": 7,
+    "priority": 7.6
+   },
+   "…(+1)"
+  ]
+ },
+ "GET /projects/:id/outlets/nearby": {
+  "status": 200,
+  "body": [
+   {
+    "id": "922bef07-3885-420e-9bac-846d9131b5d9",
+    "code": "MPT-0031",
+    "name": "Restaurante Dona Amélia Baixa",
+    "address": "Bairro Baixa, Maputo",
+    "phone": "+258823237570",
+    "phoneKey": "823237570",
+    "codeKey": "mpt-0031",
+    "contactName": "Sr. Matsinhe",
+    "channel": "Restaurante",
+    "outletClass": "B",
+    "visitFrequencyDays": 14,
+    "latitude": -25.969941,
+    "longitude": 32.57415,
+    "status": "ACTIVE",
+    "potentialScore": 1,
+    "zone": "KaMpfumo",
+    "lastVisitedAt": "2026-10-12T20:05:54.981Z",
+    "creditLimit": 15000,
+    "balance": 4631.3,
+    "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+    "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+    "createdAt": "2026-10-12T20:04:04.141Z",
+    "updatedAt": "2026-10-12T20:06:02.662Z",
+    "distanceM": 126
+   },
+   {
+    "id": "af4063a6-d2ee-4137-b23d-0f9f02253796",
+    "code": "MPT-0001",
+    "name": "Restaurante Dona Amélia Baixa",
+    "address": "Bairro Baixa, Maputo",
+    "phone": "+258823000000",
+    "phoneKey": "823000000",
+    "codeKey": "mpt-0001",
+    "contactName": "Sr. Matsinhe",
+    "channel": "Restaurante",
+    "outletClass": "A",
+    "visitFrequencyDays": 7,
+    "latitude": -25.971509,
+    "longitude": 32.572581,
+    "status": "ACTIVE",
+    "potentialScore": 0,
+    "zone": "KaMpfumo",
+    "lastVisitedAt": null,
+    "creditLimit": 0,
+    "balance": 0,
+    "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+    "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+    "createdAt": "2026-10-12T20:03:45.504Z",
+    "updatedAt": "2026-10-12T20:03:45.504Z",
+    "distanceM": 264
+   },
+   "…(+10)"
+  ]
+ },
+ "GET /outlets/:id": {
+  "status": 200,
+  "body": {
+   "id": "d8379216-0a95-4411-aa8b-1855037af02d",
+   "code": null,
+   "name": "Banca Mercado Central",
+   "address": null,
+   "phone": null,
+   "phoneKey": null,
+   "codeKey": null,
+   "contactName": null,
+   "channel": "Barraca",
+   "outletClass": null,
+   "visitFrequencyDays": 7,
+   "latitude": null,
+   "longitude": null,
+   "status": "ACTIVE",
+   "potentialScore": 0,
+   "zone": "KaMpfumo",
+   "lastVisitedAt": null,
+   "creditLimit": 0,
+   "balance": 0,
+   "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+   "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+   "createdAt": "2026-10-12T20:04:08.553Z",
+   "updatedAt": "2026-10-12T20:04:08.553Z",
+   "visits": [],
+   "orders": [],
+   "payments": [],
+   "beatStops": []
+  }
+ },
+ "GET /projects/:id/beats": {
+  "status": 200,
+  "body": [
+   {
+    "id": "92b13745-878e-4b35-b16a-bca860f231a1",
+    "name": "Beat João — KaMpfumo",
+    "description": "Circuito semanal de João Mabunda",
+    "weekdays": [
+     1,
+     3,
+     "…(+1)"
+    ],
+    "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+    "assigneeId": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+    "createdAt": "2026-10-12T20:04:21.899Z",
+    "updatedAt": "2026-10-12T20:04:21.899Z",
+    "assignee": {
+     "id": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+     "name": "João Mabunda",
+     "email": "joao.mabunda@bucketegg.demo"
+    },
+    "_count": {
+     "outlets": 6,
+     "routes": 2
+    }
+   },
+   {
+    "id": "d23ac0c9-17c6-4adc-a84a-9f5d5c9e3559",
+    "name": "Beat Luísa — KaMpfumo",
+    "description": "Circuito semanal de Luísa Bila",
+    "weekdays": [
+     1,
+     3,
+     "…(+1)"
+    ],
+    "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+    "assigneeId": "6fcfe8ff-ad50-44c3-81b5-c6c84ddce62b",
+    "createdAt": "2026-10-12T20:04:39.596Z",
+    "updatedAt": "2026-10-12T20:04:39.596Z",
+    "assignee": {
+     "id": "6fcfe8ff-ad50-44c3-81b5-c6c84ddce62b",
+     "name": "Luísa Bila",
+     "email": "luisa.bila@bucketegg.demo"
+    },
+    "_count": {
+     "outlets": 6,
+     "routes": 2
+    }
+   },
+   "…(+4)"
+  ]
+ },
+ "GET /beats/:id": {
+  "status": 200,
+  "body": {
+   "id": "92b13745-878e-4b35-b16a-bca860f231a1",
+   "name": "Beat João — KaMpfumo",
+   "description": "Circuito semanal de João Mabunda",
+   "weekdays": [
+    1,
+    3,
+    "…(+1)"
+   ],
+   "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+   "assigneeId": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+   "createdAt": "2026-10-12T20:04:21.899Z",
+   "updatedAt": "2026-10-12T20:04:21.899Z",
+   "assignee": {
+    "id": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+    "name": "João Mabunda",
+    "email": "joao.mabunda@bucketegg.demo"
+   },
+   "outlets": [
+    {
+     "beatId": "92b13745-878e-4b35-b16a-bca860f231a1",
+     "outletId": "af4063a6-d2ee-4137-b23d-0f9f02253796",
+     "orderIndex": 0,
+     "outlet": {
+      "id": "af4063a6-d2ee-4137-b23d-0f9f02253796",
+      "code": "MPT-0001",
+      "name": "Restaurante Dona Amélia Baixa",
+      "address": "Bairro Baixa, Maputo",
+      "phone": "+258823000000",
+      "phoneKey": "823000000",
+      "codeKey": "mpt-0001",
+      "contactName": "Sr. Matsinhe",
+      "channel": "Restaurante",
+      "outletClass": "A",
+      "visitFrequencyDays": 7,
+      "latitude": -25.971509,
+      "longitude": 32.572581,
+      "status": "ACTIVE",
+      "potentialScore": 0,
+      "zone": "KaMpfumo",
+      "lastVisitedAt": null,
+      "creditLimit": 0,
+      "balance": 0,
+      "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+      "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+      "createdAt": "2026-10-12T20:03:45.504Z",
+      "updatedAt": "2026-10-12T20:03:45.504Z"
+     }
+    },
+    {
+     "beatId": "92b13745-878e-4b35-b16a-bca860f231a1",
+     "outletId": "28152b5e-c73c-465d-bafc-72349ec67e9b",
+     "orderIndex": 1,
+     "outlet": {
+      "id": "28152b5e-c73c-465d-bafc-72349ec67e9b",
+      "code": "MPT-0007",
+      "name": "Restaurante Estrela Museu",
+      "address": "Bairro Museu, Maputo",
+      "phone": "+258823047514",
+      "phoneKey": "823047514",
+      "codeKey": "mpt-0007",
+      "contactName": "Sra. Cumbe",
+      "channel": "Restaurante",
+      "outletClass": "B",
+      "visitFrequencyDays": 14,
+      "latitude": -25.962896,
+      "longitude": 32.587795,
+      "status": "ACTIVE",
+      "potentialScore": 2,
+      "zone": "KaMpfumo",
+      "lastVisitedAt": "2026-10-12T20:06:05.654Z",
+      "creditLimit": 15000,
+      "balance": 7377.6,
+      "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+      "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+      "createdAt": "2026-10-12T20:03:49.425Z",
+      "updatedAt": "2026-10-12T20:06:10.789Z"
+     }
+    },
+    "…(+4)"
+   ]
+  }
+ },
+ "GET /projects/:id/routes": {
+  "status": 200,
+  "body": [
+   {
+    "id": "b3a61129-b22d-4a1e-8b75-48588175d3f0",
+    "name": "Beat Luísa — KaMpfumo - 2026-10-12",
+    "date": "2026-10-12T06:00:00.000Z",
+    "startLat": -25.9692,
+    "startLng": 32.5732,
+    "endLat": -25.9692,
+    "endLng": 32.5732,
+    "totalDistance": 40.66,
+    "estimatedMins": 196,
+    "optimizedBy": "GOOGLE",
+    "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+    "assigneeId": "6fcfe8ff-ad50-44c3-81b5-c6c84ddce62b",
+    "beatId": "d23ac0c9-17c6-4adc-a84a-9f5d5c9e3559",
+    "createdAt": "2026-10-12T20:05:11.120Z",
+    "assignee": {
+     "id": "6fcfe8ff-ad50-44c3-81b5-c6c84ddce62b",
+     "name": "Luísa Bila",
+     "email": "luisa.bila@bucketegg.demo"
+    },
+    "stops": 6,
+    "completed": 0
+   },
+   {
+    "id": "5123b27d-8b68-4dfa-b937-ea6883dd3f1c",
+    "name": "Beat Tomás — KaMpfumo - 2026-10-12",
+    "date": "2026-10-12T06:00:00.000Z",
+    "startLat": -25.9692,
+    "startLng": 32.5732,
+    "endLat": -25.9692,
+    "endLng": 32.5732,
+    "totalDistance": 26.74,
+    "estimatedMins": 153,
+    "optimizedBy": "GOOGLE",
+    "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+    "assigneeId": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+    "beatId": "527d897d-86b3-44e6-87e2-49dd5bedb423",
+    "createdAt": "2026-10-12T20:05:07.569Z",
+    "assignee": {
+     "id": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+     "name": "Tomás Muianga",
+     "email": "tomas.muianga@bucketegg.demo"
+    },
+    "stops": 6,
+    "completed": 4
+   },
+   "…(+4)"
+  ]
+ },
+ "GET /routes/:id": {
+  "status": 200,
+  "body": {
+   "id": "b3a61129-b22d-4a1e-8b75-48588175d3f0",
+   "name": "Beat Luísa — KaMpfumo - 2026-10-12",
+   "date": "2026-10-12T06:00:00.000Z",
+   "startLat": -25.9692,
+   "startLng": 32.5732,
+   "endLat": -25.9692,
+   "endLng": 32.5732,
+   "totalDistance": 40.66,
+   "estimatedMins": 196,
+   "optimizedBy": "GOOGLE",
+   "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+   "assigneeId": "6fcfe8ff-ad50-44c3-81b5-c6c84ddce62b",
+   "beatId": "d23ac0c9-17c6-4adc-a84a-9f5d5c9e3559",
+   "createdAt": "2026-10-12T20:05:11.120Z",
+   "assignee": {
+    "id": "6fcfe8ff-ad50-44c3-81b5-c6c84ddce62b",
+    "name": "Luísa Bila",
+    "email": "luisa.bila@bucketegg.demo"
+   },
+   "tasks": [
+    {
+     "id": "11803767-1990-450c-865e-89e947b4356f",
+     "title": null,
+     "notes": null,
+     "status": "PENDING",
+     "dueDate": "2026-10-12T06:00:00.000Z",
+     "routeId": "b3a61129-b22d-4a1e-8b75-48588175d3f0",
+     "orderIndex": 1,
+     "estArrival": "2026-10-12T06:12:00.000Z",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "outletId": "d4317a62-b8ad-4656-8064-a2f0f8d22c40",
+     "assigneeId": "6fcfe8ff-ad50-44c3-81b5-c6c84ddce62b",
+     "createdAt": "2026-10-12T20:05:11.391Z",
+     "updatedAt": "2026-10-12T20:05:11.391Z",
+     "outlet": {
+      "id": "d4317a62-b8ad-4656-8064-a2f0f8d22c40",
+      "code": "MPT-0036",
+      "name": "Bar Dona Amélia Xipamanine",
+      "address": "Bairro Xipamanine, Maputo",
+      "phone": "+258823277165",
+      "phoneKey": "823277165",
+      "codeKey": "mpt-0036",
+      "contactName": "Sr. Matsinhe",
+      "channel": "Bar",
+      "outletClass": "C",
+      "visitFrequencyDays": 3,
+      "latitude": -25.948846,
+      "longitude": 32.564745,
+      "status": "ACTIVE",
+      "potentialScore": 10,
+      "zone": "KaMpfumo",
+      "lastVisitedAt": null,
+      "creditLimit": 30000,
+      "balance": 0,
+      "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+      "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+      "createdAt": "2026-10-12T20:04:07.998Z",
+      "updatedAt": "2026-10-12T20:04:07.998Z"
+     },
+     "visits": []
+    },
+    {
+     "id": "4af8827c-43a0-42e8-a9e1-3e13c4557a19",
+     "title": null,
+     "notes": null,
+     "status": "PENDING",
+     "dueDate": "2026-10-12T06:00:00.000Z",
+     "routeId": "b3a61129-b22d-4a1e-8b75-48588175d3f0",
+     "orderIndex": 2,
+     "estArrival": "2026-10-12T06:30:00.000Z",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "outletId": "fab9a55d-4673-4e9b-9345-7394acfad9b1",
+     "assigneeId": "6fcfe8ff-ad50-44c3-81b5-c6c84ddce62b",
+     "createdAt": "2026-10-12T20:05:11.391Z",
+     "updatedAt": "2026-10-12T20:05:11.391Z",
+     "outlet": {
+      "id": "fab9a55d-4673-4e9b-9345-7394acfad9b1",
+      "code": "MPT-0006",
+      "name": "Bar Dona Amélia Xipamanine",
+      "address": "Bairro Xipamanine, Maputo",
+      "phone": "+258823039595",
+      "phoneKey": "823039595",
+      "codeKey": "mpt-0006",
+      "contactName": "Sr. Matsinhe",
+      "channel": "Bar",
+      "outletClass": "B",
+      "visitFrequencyDays": 7,
+      "latitude": -25.950415,
+      "longitude": 32.563176,
+      "status": "ACTIVE",
+      "potentialScore": 9,
+      "zone": "KaMpfumo",
+      "lastVisitedAt": null,
+      "creditLimit": 5000,
+      "balance": 0,
+      "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+      "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+      "createdAt": "2026-10-12T20:03:48.874Z",
+      "updatedAt": "2026-10-12T20:03:48.874Z"
+     },
+     "visits": []
+    },
+    "…(+4)"
+   ]
+  }
+ },
+ "GET /routes/my-day (rep)": {
+  "status": 200,
+  "body": {
+   "date": "2026-10-12",
+   "total": 7,
+   "completed": 4,
+   "tasks": [
+    {
+     "id": "a410d233-b493-4d18-9a14-9739a4774572",
+     "title": null,
+     "notes": null,
+     "status": "COMPLETED",
+     "dueDate": "2026-10-12T06:00:00.000Z",
+     "routeId": "d69b51ae-b3a8-4204-a6c5-cae4dc16308d",
+     "orderIndex": 1,
+     "estArrival": "2026-10-12T06:00:00.000Z",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "outletId": "922bef07-3885-420e-9bac-846d9131b5d9",
+     "assigneeId": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+     "createdAt": "2026-10-12T20:04:49.378Z",
+     "updatedAt": "2026-10-12T20:06:02.388Z",
+     "outlet": {
+      "id": "922bef07-3885-420e-9bac-846d9131b5d9",
+      "code": "MPT-0031",
+      "name": "Restaurante Dona Amélia Baixa",
+      "address": "Bairro Baixa, Maputo",
+      "phone": "+258823237570",
+      "phoneKey": "823237570",
+      "codeKey": "mpt-0031",
+      "contactName": "Sr. Matsinhe",
+      "channel": "Restaurante",
+      "outletClass": "B",
+      "visitFrequencyDays": 14,
+      "latitude": -25.969941,
+      "longitude": 32.57415,
+      "status": "ACTIVE",
+      "potentialScore": 1,
+      "zone": "KaMpfumo",
+      "lastVisitedAt": "2026-10-12T20:05:54.981Z",
+      "creditLimit": 15000,
+      "balance": 4631.3,
+      "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+      "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+      "createdAt": "2026-10-12T20:04:04.141Z",
+      "updatedAt": "2026-10-12T20:06:02.662Z"
+     },
+     "route": {
+      "id": "d69b51ae-b3a8-4204-a6c5-cae4dc16308d",
+      "name": "Beat João — KaMpfumo - 2026-10-12"
+     },
+     "visits": [
+      {
+       "id": "d3ac41b9-32b8-4168-a16e-564e161690fc",
+       "checkInAt": "2026-10-12T20:05:54.981Z",
+       "checkOutAt": "2026-10-12T20:06:02.117Z"
+      }
+     ]
+    },
+    {
+     "id": "5f18fb47-5145-4a72-8b88-faad61396316",
+     "title": null,
+     "notes": null,
+     "status": "COMPLETED",
+     "dueDate": "2026-10-12T06:00:00.000Z",
+     "routeId": "d69b51ae-b3a8-4204-a6c5-cae4dc16308d",
+     "orderIndex": 2,
+     "estArrival": "2026-10-12T06:23:00.000Z",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "outletId": "28152b5e-c73c-465d-bafc-72349ec67e9b",
+     "assigneeId": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+     "createdAt": "2026-10-12T20:04:49.378Z",
+     "updatedAt": "2026-10-12T20:06:10.518Z",
+     "outlet": {
+      "id": "28152b5e-c73c-465d-bafc-72349ec67e9b",
+      "code": "MPT-0007",
+      "name": "Restaurante Estrela Museu",
+      "address": "Bairro Museu, Maputo",
+      "phone": "+258823047514",
+      "phoneKey": "823047514",
+      "codeKey": "mpt-0007",
+      "contactName": "Sra. Cumbe",
+      "channel": "Restaurante",
+      "outletClass": "B",
+      "visitFrequencyDays": 14,
+      "latitude": -25.962896,
+      "longitude": 32.587795,
+      "status": "ACTIVE",
+      "potentialScore": 2,
+      "zone": "KaMpfumo",
+      "lastVisitedAt": "2026-10-12T20:06:05.654Z",
+      "creditLimit": 15000,
+      "balance": 7377.6,
+      "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+      "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+      "createdAt": "2026-10-12T20:03:49.425Z",
+      "updatedAt": "2026-10-12T20:06:10.789Z"
+     },
+     "route": {
+      "id": "d69b51ae-b3a8-4204-a6c5-cae4dc16308d",
+      "name": "Beat João — KaMpfumo - 2026-10-12"
+     },
+     "visits": [
+      {
+       "id": "588b30be-3193-4e6e-b3fe-8c21473d8f00",
+       "checkInAt": "2026-10-12T20:06:05.654Z",
+       "checkOutAt": "2026-10-12T20:06:10.249Z"
+      }
+     ]
+    },
+    "…(+5)"
+   ]
+  }
+ },
+ "GET /projects/:id/visits": {
+  "status": 200,
+  "body": {
+   "data": [
+    {
+     "id": "d6615ff6-b8e5-4d98-9b14-066e81c3b345",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "outletId": "ad9ef753-14dd-4674-9d47-cfa8103ab0ee",
+     "userId": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+     "taskId": "a5f4ff53-da6c-4ced-890d-850835dd959b",
+     "checkInAt": "2026-10-12T20:08:00.699Z",
+     "checkInLat": -25.953565,
+     "checkInLng": 32.580726,
+     "distanceM": 44,
+     "withinGeofence": true,
+     "checkOutAt": "2026-10-12T20:08:05.284Z",
+     "checkOutLat": null,
+     "checkOutLng": null,
+     "durationMins": 0,
+     "isProductive": true,
+     "noOrderReason": null,
+     "notes": "Visita concluída",
+     "photoUrls": [],
+     "outlet": {
+      "id": "ad9ef753-14dd-4674-9d47-cfa8103ab0ee",
+      "name": "Supermercado Sabor Malhangalene",
+      "zone": "KaMpfumo"
+     },
+     "user": {
+      "id": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+      "name": "Tomás Muianga",
+      "email": "tomas.muianga@bucketegg.demo"
+     },
+     "_count": {
+      "orders": 1
+     }
+    },
+    {
+     "id": "65de2d2d-94fb-4e4e-abcc-277520c28b81",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "outletId": "16fdf0b0-7683-42f1-80c3-a578fa6055fb",
+     "userId": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+     "taskId": "a08f8aba-9fc4-421d-a340-14beed288841",
+     "checkInAt": "2026-10-12T20:07:54.762Z",
+     "checkInLat": -25.952192,
+     "checkInLng": 32.583598,
+     "distanceM": 44,
+     "withinGeofence": true,
+     "checkOutAt": "2026-10-12T20:07:57.466Z",
+     "checkOutLat": null,
+     "checkOutLng": null,
+     "durationMins": 0,
+     "isProductive": false,
+     "noOrderReason": "Stock suficiente ou crédito esgotado",
+     "notes": "Sem encomenda hoje",
+     "photoUrls": [],
+     "outlet": {
+      "id": "16fdf0b0-7683-42f1-80c3-a578fa6055fb",
+      "name": "Supermercado Avenida Coop",
+      "zone": "KaMpfumo"
+     },
+     "user": {
+      "id": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+      "name": "Tomás Muianga",
+      "email": "tomas.muianga@bucketegg.demo"
+     },
+     "_count": {
+      "orders": 0
+     }
+    }
+   ],
+   "meta": {
+    "total": 18,
+    "page": 1,
+    "limit": 2,
+    "pages": 9
+   }
+  }
+ },
+ "GET /visits/active (rep)": {
+  "status": 200,
+  "body": null
+ },
+ "GET /projects/:id/attendance": {
+  "status": 200,
+  "body": {
+   "date": "2026-10-12",
+   "present": 5,
+   "absent": [
+    {
+     "id": "6fcfe8ff-ad50-44c3-81b5-c6c84ddce62b",
+     "name": "Luísa Bila",
+     "email": "luisa.bila@bucketegg.demo"
+    }
+   ],
+   "records": [
+    {
+     "id": "9b33b1bb-e126-414b-af0f-d503fe92a7af",
+     "userId": "f335f7a2-8df7-44a3-9f26-32459f842282",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "date": "2026-10-12T00:00:00.000Z",
+     "clockInAt": "2026-10-12T20:05:44.691Z",
+     "clockInLat": -25.9692,
+     "clockInLng": 32.5732,
+     "clockOutAt": null,
+     "clockOutLat": null,
+     "clockOutLng": null,
+     "selfieUrl": null,
+     "user": {
+      "id": "f335f7a2-8df7-44a3-9f26-32459f842282",
+      "name": "Maria Sitoe",
+      "email": "maria.sitoe@bucketegg.demo"
+     }
+    },
+    {
+     "id": "629dfb00-c499-43e5-ba4d-e3acc9a50098",
+     "userId": "f5792f6a-5df3-4748-bbfe-2322819bada5",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "date": "2026-10-12T00:00:00.000Z",
+     "clockInAt": "2026-10-12T20:05:46.047Z",
+     "clockInLat": -25.9692,
+     "clockInLng": 32.5732,
+     "clockOutAt": null,
+     "clockOutLat": null,
+     "clockOutLng": null,
+     "selfieUrl": null,
+     "user": {
+      "id": "f5792f6a-5df3-4748-bbfe-2322819bada5",
+      "name": "Pedro Nhantumbo",
+      "email": "pedro.nhantumbo@bucketegg.demo"
+     }
+    },
+    "…(+3)"
+   ]
+  }
+ },
+ "GET /products": {
+  "status": 200,
+  "body": {
+   "data": [
+    {
+     "id": "27d861b1-2be3-4dc1-88ad-0745435fac7e",
+     "organizationId": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+     "sku": "2M-340",
+     "name": "2M 340ml",
+     "brand": "2M",
+     "category": "Cervejas",
+     "unit": "CX24",
+     "price": 1450,
+     "taxRate": 16,
+     "isActive": true,
+     "isMustSell": true,
+     "createdAt": "2026-10-12T20:04:18.264Z",
+     "updatedAt": "2026-10-12T20:04:18.264Z"
+    },
+    {
+     "id": "fd07bd28-de20-449c-9d70-2741c62f778b",
+     "organizationId": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+     "sku": "CC-2L",
+     "name": "Coca-Cola 2L",
+     "brand": "Coca-Cola",
+     "category": "Refrigerantes",
+     "unit": "CX6",
+     "price": 780,
+     "taxRate": 16,
+     "isActive": true,
+     "isMustSell": true,
+     "createdAt": "2026-10-12T20:04:17.422Z",
+     "updatedAt": "2026-10-12T20:04:17.422Z"
+    }
+   ],
+   "meta": {
+    "total": 12,
+    "page": 1,
+    "limit": 2,
+    "pages": 6
+   }
+  }
+ },
+ "GET /products/:id": {
+  "status": 200,
+  "body": {
+   "id": "27d861b1-2be3-4dc1-88ad-0745435fac7e",
+   "organizationId": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+   "sku": "2M-340",
+   "name": "2M 340ml",
+   "brand": "2M",
+   "category": "Cervejas",
+   "unit": "CX24",
+   "price": 1450,
+   "taxRate": 16,
+   "isActive": true,
+   "isMustSell": true,
+   "createdAt": "2026-10-12T20:04:18.264Z",
+   "updatedAt": "2026-10-12T20:04:18.264Z"
+  }
+ },
+ "GET /projects/:id/orders": {
+  "status": 200,
+  "body": {
+   "data": [
+    {
+     "id": "f74d22ae-7403-4b46-9755-c7e2a52fd091",
+     "number": "ORD-000010",
+     "status": "CONFIRMED",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "outletId": "ad9ef753-14dd-4674-9d47-cfa8103ab0ee",
+     "userId": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+     "visitId": "d6615ff6-b8e5-4d98-9b14-066e81c3b345",
+     "subtotal": 2860,
+     "discount": 0,
+     "tax": 457.6,
+     "total": 3317.6,
+     "notes": null,
+     "createdAt": "2026-10-12T20:08:04.381Z",
+     "updatedAt": "2026-10-12T20:08:14.762Z",
+     "outlet": {
+      "id": "ad9ef753-14dd-4674-9d47-cfa8103ab0ee",
+      "name": "Supermercado Sabor Malhangalene"
+     },
+     "user": {
+      "id": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+      "name": "Tomás Muianga"
+     },
+     "_count": {
+      "items": 2
+     }
+    },
+    {
+     "id": "db6b9a76-10d0-4bd0-b0d7-84cff5c4d979",
+     "number": "ORD-000009",
+     "status": "DELIVERED",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "outletId": "5c8b1acb-0794-4e6e-bb9c-a37141bc8ab7",
+     "userId": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+     "visitId": "d18f28c8-8579-43b9-909b-da032cafacfb",
+     "subtotal": 5680,
+     "discount": 72.5,
+     "tax": 897.2,
+     "total": 6504.7,
+     "notes": "Entregar antes das 15h",
+     "createdAt": "2026-10-12T20:07:41.825Z",
+     "updatedAt": "2026-10-12T20:08:20.158Z",
+     "outlet": {
+      "id": "5c8b1acb-0794-4e6e-bb9c-a37141bc8ab7",
+      "name": "Supermercado Sol Nascente Machava"
+     },
+     "user": {
+      "id": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+      "name": "Tomás Muianga"
+     },
+     "_count": {
+      "items": 3
+     }
+    }
+   ],
+   "meta": {
+    "total": 10,
+    "page": 1,
+    "limit": 2,
+    "pages": 5
+   }
+  }
+ },
+ "GET /orders/:id": {
+  "status": 200,
+  "body": {
+   "id": "f74d22ae-7403-4b46-9755-c7e2a52fd091",
+   "number": "ORD-000010",
+   "status": "CONFIRMED",
+   "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+   "outletId": "ad9ef753-14dd-4674-9d47-cfa8103ab0ee",
+   "userId": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+   "visitId": "d6615ff6-b8e5-4d98-9b14-066e81c3b345",
+   "subtotal": 2860,
+   "discount": 0,
+   "tax": 457.6,
+   "total": 3317.6,
+   "notes": null,
+   "createdAt": "2026-10-12T20:08:04.381Z",
+   "updatedAt": "2026-10-12T20:08:14.762Z",
+   "outlet": {
+    "id": "ad9ef753-14dd-4674-9d47-cfa8103ab0ee",
+    "name": "Supermercado Sabor Malhangalene",
+    "address": "Bairro Malhangalene, Maputo",
+    "phone": "+258823269246"
+   },
+   "user": {
+    "id": "2e50a4e4-f3a1-4b55-bead-3a671068eef2",
+    "name": "Tomás Muianga",
+    "email": "tomas.muianga@bucketegg.demo"
+   },
+   "items": [
+    {
+     "id": "3b81ef41-3cde-4f75-b539-4d0dd8648ff9",
+     "orderId": "f74d22ae-7403-4b46-9755-c7e2a52fd091",
+     "productId": "d6e43565-39b8-4bb3-aede-e427a0566251",
+     "quantity": 4,
+     "unitPrice": 420,
+     "discount": 0,
+     "taxRate": 16,
+     "lineTotal": 1948.8,
+     "product": {
+      "id": "d6e43565-39b8-4bb3-aede-e427a0566251",
+      "sku": "AV-500",
+      "name": "Água Vumba 500ml",
+      "unit": "CX12"
+     }
+    },
+    {
+     "id": "f6cdfec4-6eba-491a-bcfd-2f28144eaec4",
+     "orderId": "f74d22ae-7403-4b46-9755-c7e2a52fd091",
+     "productId": "570a396e-3fe9-401a-9683-d74fbb0911c3",
+     "quantity": 1,
+     "unitPrice": 1180,
+     "discount": 0,
+     "taxRate": 16,
+     "lineTotal": 1368.8,
+     "product": {
+      "id": "570a396e-3fe9-401a-9683-d74fbb0911c3",
+      "sku": "SC-330",
+      "name": "Schweppes Tónica 330ml",
+      "unit": "CX24"
+     }
+    }
+   ]
+  }
+ },
+ "GET /outlets/:id/statement": {
+  "status": 200,
+  "body": {
+   "outlet": {
+    "id": "ad9ef753-14dd-4674-9d47-cfa8103ab0ee",
+    "name": "Supermercado Sabor Malhangalene",
+    "creditLimit": 15000
+   },
+   "totalOrdered": 3317.6,
+   "totalPaid": 1991,
+   "balance": 1326.6,
+   "orders": [
+    {
+     "id": "f74d22ae-7403-4b46-9755-c7e2a52fd091",
+     "number": "ORD-000010",
+     "total": 3317.6,
+     "status": "CONFIRMED",
+     "createdAt": "2026-10-12T20:08:04.381Z"
+    }
+   ],
+   "payments": [
+    {
+     "id": "d90cbd81-d99a-4b76-816e-eed3787de638",
+     "outletId": "ad9ef753-14dd-4674-9d47-cfa8103ab0ee",
+     "userId": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+     "amount": 1991,
+     "method": "CASH",
+     "reference": null,
+     "notes": null,
+     "createdAt": "2026-10-12T20:08:40.915Z"
+    }
+   ]
+  }
+ },
+ "GET /outlets/:id/suggested-order": {
+  "status": 200,
+  "body": {
+   "basedOnOrders": 1,
+   "items": [
+    {
+     "productId": "d6e43565-39b8-4bb3-aede-e427a0566251",
+     "sku": "AV-500",
+     "name": "Água Vumba 500ml",
+     "price": 420,
+     "suggestedQuantity": 4,
+     "reason": "comprado em 1 das últimas 1 encomendas",
+     "frequency": 1
+    },
+    {
+     "productId": "570a396e-3fe9-401a-9683-d74fbb0911c3",
+     "sku": "SC-330",
+     "name": "Schweppes Tónica 330ml",
+     "price": 1180,
+     "suggestedQuantity": 1,
+     "reason": "comprado em 1 das últimas 1 encomendas",
+     "frequency": 1
+    },
+    "…(+3)"
+   ]
+  }
+ },
+ "GET /datasets/project/:id (audit)": {
+  "status": 200,
+  "body": [
+   {
+    "id": "c1a5df98-2df2-4d48-bdab-09622eb7ba61",
+    "name": "Auditoria de prateleira — Outubro",
+    "schema": {
+     "col_0": {
+      "type": "boolean",
+      "label": "Produto visível na prateleira?",
+      "active": true
+     },
+     "col_1": {
+      "type": "number",
+      "label": "Nº de frentes (facings)",
+      "active": true
+     },
+     "col_2": {
+      "type": "number",
+      "label": "Preço Coca-Cola 330ml (MZN)",
+      "active": true
+     },
+     "col_3": {
+      "type": "date",
+      "label": "Data de validade mais próxima",
+      "active": true
+     },
+     "col_4": {
+      "type": "string",
+      "label": "Material promocional",
+      "active": true
+     },
+     "col_5": {
+      "type": "string",
+      "label": "Observações",
+      "active": true
+     }
+    },
+    "status": "READY",
+    "rowCount": 23,
+    "createdAt": "2026-10-12T20:08:57.176Z"
+   }
+  ]
+ },
+ "GET /datasets/project/:id (dist)": {
+  "status": 200,
+  "body": [
+   {
+    "id": "5bb19ca1-beee-4c8d-bdfd-a197f1767891",
+    "name": "Vendas de setembro",
+    "schema": {
+     "col_0": {
+      "type": "date",
+      "label": "Data",
+      "active": true,
+      "originalName": "Data"
+     },
+     "col_1": {
+      "type": "string",
+      "label": "Loja",
+      "active": true,
+      "originalName": "Loja"
+     },
+     "col_2": {
+      "type": "string",
+      "label": "Produto",
+      "active": true,
+      "originalName": "Produto"
+     },
+     "col_3": {
+      "type": "number",
+      "label": "Quantidade",
+      "active": true,
+      "originalName": "Quantidade"
+     },
+     "col_4": {
+      "type": "number",
+      "label": "Valor (MZN)",
+      "active": true,
+      "originalName": "Valor (MZN)"
+     },
+     "col_5": {
+      "type": "string",
+      "label": "Promotor",
+      "active": true,
+      "originalName": "Promotor"
+     },
+     "col_6": {
+      "type": "boolean",
+      "label": "Pago",
+      "active": true,
+      "originalName": "Pago"
+     }
+    },
+    "status": "READY",
+    "rowCount": 300,
+    "createdAt": "2026-10-12T20:09:37.934Z"
+   }
+  ]
+ },
+ "GET /datasets/:id/records": {
+  "status": 200,
+  "body": {
+   "schema": {
+    "col_0": {
+     "type": "boolean",
+     "label": "Produto visível na prateleira?",
+     "active": true
+    },
+    "col_1": {
+     "type": "number",
+     "label": "Nº de frentes (facings)",
+     "active": true
+    },
+    "col_2": {
+     "type": "number",
+     "label": "Preço Coca-Cola 330ml (MZN)",
+     "active": true
+    },
+    "col_3": {
+     "type": "date",
+     "label": "Data de validade mais próxima",
+     "active": true
+    },
+    "col_4": {
+     "type": "string",
+     "label": "Material promocional",
+     "active": true
+    },
+    "col_5": {
+     "type": "string",
+     "label": "Observações",
+     "active": true
+    }
+   },
+   "status": "READY",
+   "canEdit": true,
+   "data": [
+    {
+     "id": "a3ab9d53-865d-4e2e-8b3b-160aa1e3d6c9",
+     "seq": "1",
+     "data": {
+      "col_0": false,
+      "col_1": 2,
+      "col_2": 47.5,
+      "col_3": "2026-11-05",
+      "col_4": "Cartaz",
+      "col_5": "Prateleira arrumada"
+     },
+     "outletId": "2e743f09-e4ce-44d1-9792-f26cc7750237",
+     "gpsLat": -25.9477,
+     "gpsLng": 32.56019999999999,
+     "createdAt": "2026-10-12T20:08:59.095Z",
+     "submittedBy": {
+      "id": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+      "name": "João Mabunda",
+      "email": "joao.mabunda@bucketegg.demo"
+     },
+     "updatedAt": "2026-10-12T20:09:26.621Z",
+     "updatedBy": {
+      "id": "21c63090-6963-4a38-a4a2-17f5b616d52d",
+      "name": "Ana Machava",
+      "email": "ana.machava@bucketegg.demo"
+     },
+     "deletedAt": null,
+     "revisions": 1
+    },
+    {
+     "id": "b6cd259c-3254-4e36-8d5d-2f5d32f493f9",
+     "seq": "3",
+     "data": {
+      "col_0": true,
+      "col_1": 4,
+      "col_2": 50,
+      "col_3": "2026-11-07",
+      "col_4": "Nenhum",
+      "col_5": "Preço acima do recomendado"
+     },
+     "outletId": "4666c41c-8f0a-4308-9d24-776fc37b8acb",
+     "gpsLat": -25.9473,
+     "gpsLng": 32.5832,
+     "createdAt": "2026-10-12T20:09:02.342Z",
+     "submittedBy": {
+      "id": "f5792f6a-5df3-4748-bbfe-2322819bada5",
+      "name": "Pedro Nhantumbo",
+      "email": "pedro.nhantumbo@bucketegg.demo"
+     },
+     "updatedAt": null,
+     "updatedBy": null,
+     "deletedAt": null,
+     "revisions": 0
+    }
+   ],
+   "meta": {
+    "total": 23,
+    "limit": 2,
+    "page": 1,
+    "pages": 12,
+    "nextCursor": "3"
+   }
+  }
+ },
+ "GET /datasets/:id/records/:rid/history": {
+  "status": 200,
+  "body": {
+   "id": "a3ab9d53-865d-4e2e-8b3b-160aa1e3d6c9",
+   "seq": "1",
+   "datasetId": "c1a5df98-2df2-4d48-bdab-09622eb7ba61",
+   "outletId": "2e743f09-e4ce-44d1-9792-f26cc7750237",
+   "data": {
+    "col_0": false,
+    "col_1": 2,
+    "col_2": 47.5,
+    "col_3": "2026-11-05",
+    "col_4": "Cartaz",
+    "col_5": "Prateleira arrumada"
+   },
+   "gpsLat": -25.9477,
+   "gpsLng": 32.56019999999999,
+   "submittedById": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+   "updatedById": "21c63090-6963-4a38-a4a2-17f5b616d52d",
+   "updatedAt": "2026-10-12T20:09:26.621Z",
+   "deletedById": null,
+   "deletedAt": null,
+   "createdAt": "2026-10-12T20:08:59.095Z",
+   "submittedBy": {
+    "id": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+    "name": "João Mabunda",
+    "email": "joao.mabunda@bucketegg.demo"
+   },
+   "revisions": [
+    {
+     "id": "e516b21a-62da-4c1e-8be3-5ba61714015e",
+     "recordId": "a3ab9d53-865d-4e2e-8b3b-160aa1e3d6c9",
+     "action": "UPDATE",
+     "editedById": "21c63090-6963-4a38-a4a2-17f5b616d52d",
+     "previousData": {
+      "data": {
+       "col_0": false,
+       "col_1": 2,
+       "col_2": 45,
+       "col_3": "2026-11-05",
+       "col_4": "Cartaz",
+       "col_5": "Prateleira arrumada"
+      },
+      "outletId": "2e743f09-e4ce-44d1-9792-f26cc7750237"
+     },
+     "newData": {
+      "data": {
+       "col_0": false,
+       "col_1": 2,
+       "col_2": 47.5,
+       "col_3": "2026-11-05",
+       "col_4": "Cartaz",
+       "col_5": "Prateleira arrumada"
+      },
+      "outletId": "2e743f09-e4ce-44d1-9792-f26cc7750237"
+     },
+     "reason": "Preço confirmado por fotografia",
+     "createdAt": "2026-10-12T20:09:27.427Z",
+     "editedBy": {
+      "id": "21c63090-6963-4a38-a4a2-17f5b616d52d",
+      "name": "Ana Machava",
+      "email": "ana.machava@bucketegg.demo"
+     }
+    }
+   ]
+  }
+ },
+ "GET /imports": {
+  "status": 200,
+  "body": {
+   "data": [
+    {
+     "id": "7329948a-40ed-412f-8ffa-7ef8d104c656",
+     "organizationId": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "datasetId": "5bb19ca1-beee-4c8d-bdfd-a197f1767891",
+     "createdById": "6e73bf00-7b5c-4426-aeca-36727a5ce643",
+     "kind": "DATASET",
+     "status": "COMPLETED",
+     "fileName": "vendas-setembro.xlsx",
+     "fileSize": 16705,
+     "format": "xlsx",
+     "sheetName": null,
+     "targetName": "Vendas de setembro",
+     "rowsProcessed": 300,
+     "rowsFailed": 0,
+     "error": null,
+     "cancelRequested": false,
+     "attempts": 1,
+     "heartbeatAt": "2026-10-12T20:09:43.745Z",
+     "startedAt": "2026-10-12T20:09:38.363Z",
+     "finishedAt": "2026-10-12T20:09:44.017Z",
+     "createdAt": "2026-10-12T20:09:34.384Z"
+    },
+    {
+     "id": "36158f47-997c-4357-b65f-b1188a2fcf67",
+     "organizationId": "42fe23ca-f7db-4a35-9b1c-f3a5753ddf45",
+     "projectId": "d757d778-d147-4468-915c-d62ffaedc424",
+     "datasetId": null,
+     "createdById": "9aa9699a-7ff2-4ced-abf0-db482c9b0fe6",
+     "kind": "OUTLETS",
+     "status": "COMPLETED",
+     "fileName": "lojas-zimpeto.xlsx",
+     "fileSize": 7098,
+     "format": "xlsx",
+     "sheetName": null,
+     "targetName": null,
+     "rowsProcessed": 12,
+     "rowsFailed": 0,
+     "error": null,
+     "cancelRequested": false,
+     "attempts": 1,
+     "heartbeatAt": "2026-10-12T20:09:36.417Z",
+     "startedAt": "2026-10-12T20:09:35.356Z",
+     "finishedAt": "2026-10-12T20:09:39.668Z",
+     "createdAt": "2026-10-12T20:09:33.551Z"
+    }
+   ],
+   "meta": {
+    "total": 2,
+    "page": 1,
+    "limit": 2,
+    "pages": 1
+   }
+  }
+ },
+ "GET /projects/:id/analytics/dashboard": {
+  "status": 200,
+  "body": {
+   "period": {
+    "from": "2026-09-13",
+    "to": "2026-10-12"
+   },
+   "planVsActual": {
+    "planned": 37,
+    "completed": 18,
+    "missed": 0,
+    "pending": 19,
+    "completionRate": 48.6
+   },
+   "visits": {
+    "total": 18,
+    "productive": 10,
+    "strikeRate": 55.6,
+    "outsideGeofence": 1,
+    "avgDurationMins": 0
+   },
+   "sales": {
+    "orders": 9,
+    "revenue": 50033.12,
+    "avgOrderValue": 5559.24
+   },
+   "collections": {
+    "payments": 5,
+    "amount": 12200
+   },
+   "outlets": {
+    "active": 50,
+    "pendingApproval": 1,
+    "visited": 18,
+    "coverage": 36
+   },
+   "attendanceToday": 5,
+   "leaderboard": [
+    {
+     "user": {
+      "id": "5954d3bc-8b37-4e39-a31b-5f1ff1e46652",
+      "name": "João Mabunda",
+      "email": "joao.mabunda@bucketegg.demo"
+     },
+     "visits": 4,
+     "productiveVisits": 3,
+     "strikeRate": 75,
+     "orders": 3,
+     "revenue": 17600.1
+    },
+    {
+     "user": {
+      "id": "f335f7a2-8df7-44a3-9f26-32459f842282",
+      "name": "Maria Sitoe",
+      "email": "maria.sitoe@bucketegg.demo"
+     },
+     "visits": 3,
+     "productiveVisits": 2,
+     "strikeRate": 66.7,
+     "orders": 2,
+     "revenue": 14687.92
+    },
+    "…(+3)"
+   ]
+  }
+ },
+ "GET /projects/:id/analytics/sales-trend": {
+  "status": 200,
+  "body": [
+   {
+    "date": "2026-09-13",
+    "orders": 0,
+    "revenue": 0
+   },
+   {
+    "date": "2026-09-14",
+    "orders": 0,
+    "revenue": 0
+   },
+   "…(+28)"
+  ]
+ }
+}
