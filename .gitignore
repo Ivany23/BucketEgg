@@ -9,11 +9,12 @@ coverage/
 .env.*
 !.env.example
 
-# Ficheiros importados guardados localmente (STORAGE_DRIVER=local)
-storage/
+# Ficheiros importados guardados localmente (STORAGE_DRIVER=local).
+# Com "/" no início: só estas pastas — NÃO o código em apps/api/src/storage/.
+/apps/api/storage/
 
 # Backups da base de dados (contêm dados reais)
-backups/
+/backups/
 
 # Next.js / Vercel
 .next/
@@ -22,8 +23,7 @@ out/
 next-env.d.ts
 
 # Armazenamento local de demonstração e testes
-storage-*/
-apps/api/storage*/
+/apps/api/storage-*/
 
 # Relatórios de testes e ferramentas
 playwright-report/

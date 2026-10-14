@@ -1,2 +1,15 @@
 patchedDependencies:
   exceljs@4.4.0: patches/exceljs@4.4.0.patch
+
+# pnpm 10 não corre scripts de instalação das dependências sem autorização explícita.
+# Autorizados: Prisma (motores da base de dados) e bcrypt (binário nativo).
+onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - prisma
+  - bcrypt
+
+# Desnecessários: telemetria (@scarf/scarf) e o @swc/core já traz o binário da plataforma.
+ignoredBuiltDependencies:
+  - '@scarf/scarf'
+  - '@swc/core'
