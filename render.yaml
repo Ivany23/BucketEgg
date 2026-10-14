@@ -13,8 +13,9 @@ services:
     # Com rootDir definido, estes caminhos são relativos a apps/api (não à raiz do repositório).
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    # Aplica as migrações pendentes (não faz nada se já estiverem aplicadas) e arranca a API.
-    dockerCommand: sh -c "./node_modules/.bin/prisma migrate deploy && exec node dist/main.js"
+    # Aplica as migrações pendentes e arranca a API (apps/api/start.sh). Sem espaços nem aspas:
+    # o Render usa o dockerCommand como um único executável.
+    dockerCommand: ./start.sh
     healthCheckPath: /health
     autoDeployTrigger: commit
     envVars:
