@@ -10,8 +10,9 @@ services:
     # Para produção e Excel de 300 000+ linhas: 1c-2g (2 GB RAM) ou superior.
     plan: free
     rootDir: apps/api # só alterações nesta pasta fazem novo deploy
-    dockerfilePath: ./apps/api/Dockerfile
-    dockerContext: ./apps/api
+    # Com rootDir definido, estes caminhos são relativos a apps/api (não à raiz do repositório).
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     # Aplica as migrações pendentes (não faz nada se já estiverem aplicadas) e arranca a API.
     dockerCommand: sh -c "./node_modules/.bin/prisma migrate deploy && exec node dist/main.js"
     healthCheckPath: /health
